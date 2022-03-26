@@ -1,0 +1,54 @@
+{% extends 'basic.html' %}
+
+{% block title %}
+<title>Colorization</title>
+{% endblock %}
+
+{% block body %}
+
+<p style="text-align: center; font-size: 40px; padding-top: 30px;">C<span style="color:grey">O</span>LO<span style="color:grey">R</span>
+	<span style="color:red">I</span><span style="color:green">Z</span><span style="color:blue">A</span><span style="color: purple">T</span><span style="color:yellow">I</span><span style="color:brown;">O</span><span style="color:maroon;">N</span></p>
+<div class='wrapper'>
+	<div class='flex'>
+		<div class='border'><img src='../static/images/no-image.jpg' id="output" onload="centrate(event)" /></div>
+		<form action='/' method="POST" enctype="multipart/form-data">
+			<p><input type="file" accept="image/jpeg, image/png, image/jpg" name="image" id="file" onchange="loadFile(event)" style="display: none" required></p>
+			<p style="text-align: center; padding-top: 30px;"><label for="file" style="cursor: pointer;">Upload Image</label></p>
+
+			<p><input type="submit" id="submit" style="display: none"></p>
+			<p style="text-align: center; padding-top: 30px;"><label for="submit" style="cursor: pointer;">Submit</label></p>
+		</form>
+	</div>
+
+	<div class='flex'>
+		<div class='border'>
+			<img id='result' 
+			{% if filename %}
+				src = '{{filename}}'
+			{% else %}
+				src='../static/images/no-image.jpg'
+			{% endif %}
+			onload="centrate(event)">
+		</div>
+		<p style="margin-top: 30px; text-align: center;"><span style="font-size: 20px;">Result image</span></p>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	var loadFile = function(event) {
+		var image = document.getElementById('output');
+		image.src = URL.createObjectURL(event.target.files[0]);
+	};
+
+	var centrate = function(event) {
+		var element = event.target;
+		var pos_info = element.getBoundingClientRect();
+		var x_shift = (pos_info.width - 400)/2
+		var y_shift = (pos_info.height - 400)/2
+		element.style.marginLeft = -x_shift + "px"
+		element.style.marginTop = -y_shift + "px"
+	};
+</script>
+{% endblock %}
